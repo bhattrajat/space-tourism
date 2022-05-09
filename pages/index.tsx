@@ -1,86 +1,54 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
-
-const Home: NextPage = () => {
+import Link from 'next/link'
+import { ReactNode } from 'react'
+import ReactMarkdown from 'react-markdown'
+import styles from '../styles/markdown.module.css'
+type PagePropsType = {
+  children: ReactNode
+  data: any
+}
+const Home: NextPage<PagePropsType> = ({ data }) => {
+  const description = data.attributes.description
+  const buttonText = data.attributes.buttonText
+  console.log(data)
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
-        </p>
-
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and its API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      {/* <main className="prose prose-lg p-6 text-center prose-headings:text-white prose-h2:text-[#D0D6F9] prose-p:text-[#D0D6F9]">
+        <ReactMarkdown components={{ h6: 'p' }}>{description}</ReactMarkdown>
+      </main> */}
+      <main className="mt-12 text-center lg:mt-16 lg:flex lg:justify-around lg:text-left">
+        <ReactMarkdown
+          className={`${styles.markdown} lg:w-[450px]`}
+          components={{ h6: 'p' }}
         >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </a>
-      </footer>
-    </div>
+          {description}
+        </ReactMarkdown>
+        {/* after:absolute after:inset-0 after:-z-20 after:block after:rounded-full after:border-4 after:bg-[#979797] */}
+        <Link href="/destination">
+          <a className="relative z-20 mx-auto mt-20 flex h-36 w-36 flex-grow-0 items-center justify-center rounded-full bg-white font-belleflair text-xl text-black transition-transform after:absolute after:inset-0 after:block after:rounded-full after:border-4 after:bg-white after:opacity-20 after:transition-transform hover:after:scale-150 lg:mx-0 lg:h-64 lg:w-64 lg:text-3xl">
+            {buttonText}
+          </a>
+        </Link>
+      </main>
+    </>
   )
 }
 
 export default Home
+
+export async function getStaticProps() {
+  const res = await fetch('http://localhost:1337/api/home')
+  const data = await res.json()
+  console.log(data)
+  return {
+    props: {
+      data: data.data,
+    },
+  }
+}

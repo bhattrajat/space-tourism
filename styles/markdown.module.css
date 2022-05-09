@@ -1,0 +1,31 @@
+.markdown {
+  color: #d0d6f9;
+}
+.markdown h1 {
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.markdown strong {
+  font-size: 80px;
+  font-weight: normal;
+  color: white;
+  margin: 1rem 0;
+  display: block;
+  font-family: 'Bellefair', serif;
+}
+
+@media screen and (min-width: 1024px) {
+  .markdown h1 strong {
+    font-size: 150px;
+  }
+
+  .markdown h1 {
+    font-size: 1.5rem;
+  }
+
+  .markdown p {
+    font-size: 18px;
+    line-height: 32px;
+  }
+}
